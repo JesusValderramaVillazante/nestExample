@@ -24,6 +24,9 @@
     "@nestjs/microservices": "^6.0.4",
     "@nestjs/platform-express": "^6.0.4",
     "@nestjs/websockets": "^6.0.4",
+    "class-transformer": "^0.2.0",
+    "class-validator": "^0.9.1",
+    "joi": "^14.3.1",
     "reflect-metadata": "0.1.13",
     "rimraf": "2.6.3",
     "rxjs": "6.4.0"

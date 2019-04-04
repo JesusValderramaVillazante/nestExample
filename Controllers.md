@@ -1,8 +1,6 @@
-# Controller
+# **Controller**
 
-## Enrutamiento
----
-
+# Enrutamiento
 En el siguiente ejemplo usaremos el decorador `@Controller()`, que se requiere para definir un controlador básico. Especificaremos un prefijo de ruta, de ruta opcional de los gatos. El uso de un prefijo de ruta en un decorador `@Controller()` nos permite agrupar fácilmente un conjunto de rutas relacionadas y minimizar el código repetitivo. Por ejemplo, podemos elegir agrupar un conjunto de rutas que gestionan las interacciones con una entidad del cliente en la ruta /clientes. En ese caso, podríamos especificar el prefijo de ruta a los clientes en el decorador `@Controller()` para que no tengamos que repetir esa parte de la ruta para cada ruta en el archivo.
 
 ```JS
@@ -19,25 +17,22 @@ export class CatsController {
 > **Insinuación**
 Para crear un controlador utilizando la CLI, simplemente ejecute el comando `$ nest g controller cats`.
 
-El decorador del método de solicitud HTTP `@Get()` antes del método `findAll()` le dice a Nest que cree un controlador para un punto final específico para las solicitudes HTTP. El punto final corresponde al método de solicitud HTTP (GET en este caso) y la ruta de la ruta. ¿Cuál es la ruta de la ruta? La ruta de la ruta para un controlador se determina mediante la concatenación del prefijo `(opcional)` declarado para el controlador y cualquier ruta especificada en el decorador de solicitudes. Desde que hemos declarado un prefijo para cada ruta (gatos), y no hemos agregado ninguna información de ruta en el decorador, Nest asignará las solicitudes `GET /cats` a este controlador. Como se mencionó, la ruta incluye tanto el prefijo de ruta del controlador opcional como cualquier cadena de ruta declarada en el decorador del método de solicitud. Por ejemplo, un prefijo de ruta de los clientes combinado con el decorador @Get ('perfil') produciría una asignación de ruta para solicitudes como `GET /clientes/perfil`.
+El decorador del método de solicitud HTTP `@Get()` antes del método `findAll()` le dice a Nest que cree un controlador para un punto final específico para las solicitudes HTTP. El punto final corresponde al método de solicitud HTTP (GET en este caso) y la ruta de la ruta. ¿Cuál es la ruta de la ruta? La ruta de la ruta para un controlador se determina mediante la concatenación del prefijo `(opcional)` declarado para el controlador y cualquier ruta especificada en el decorador de solicitudes. Desde que hemos declarado un prefijo para cada ruta (gatos), y no hemos agregado ninguna información de ruta en el decorador, Nest asignará las solicitudes `GET /cats` a este controlador. Como se mencionó, la ruta incluye tanto el prefijo de ruta del controlador opcional como cualquier cadena de ruta declarada en el decorador del método de solicitud. Por ejemplo, un prefijo de ruta de los clientes combinado con el decorador `@Get('perfil')` produciría una asignación de ruta para solicitudes como `GET /clientes/perfil`.
 
 En nuestro ejemplo anterior, cuando se realiza una solicitud GET a este punto final, Nest enruta la solicitud a nuestro método `findAll()` definido por el usuario. Tenga en cuenta que el nombre del método que elegimos aquí es completamente arbitrario. Obviamente, debemos declarar un método para vincular la ruta, pero Nest no agrega ningún significado al nombre del método elegido. Este método devolverá un código de estado 200 y la respuesta asociada, que en este caso es solo una cadena. ¿Por qué sucede eso? Para explicarlo, primero presentaremos el concepto de que Nest emplea dos opciones diferentes para manipular las respuestas:
 
-## Standard (recommended)
----
+# Standard (recommended)
 Usando este método incorporado, cuando un controlador de solicitudes devuelve un objeto o una matriz de JavaScript, `se serializará automáticamente a JSON`. Sin embargo, cuando devuelve una cadena, Nest enviará solo una cadena sin intentar serializarla. Esto hace que el manejo de la respuesta sea simple: simplemente devuelva el valor y Nest se encargará del resto.
 
 Además, el código de estado de la respuesta es siempre 200 de forma predeterminada, excepto para las solicitudes `POST que usan 201`. Podemos cambiar este comportamiento fácilmente agregando el decorador `@HttpCode(...)` a nivel de manejador (consulte Códigos de estado).
 
-## Library-specific
----
+# Library-specific
 Podemos usar el objeto de respuesta específico de la biblioteca (por ejemplo, Express), que se puede inyectar con el decorador `@Res()` en la firma del controlador de método `(por ejemplo, findAll(@Res() request: Request))`. Con este enfoque, tiene la capacidad (y la responsabilidad)de usar los métodos de manejo de respuesta nativos expuestos por ese objeto. Por ejemplo, con Express, puede construir respuestas usando código como `response.status(200).send()`
 
 > **Advertencia**   
-No puedes usar ambos enfoques al mismo tiempo. Nest detecta cuando el controlador está utilizando @Res () o @Next (), lo que indica que ha elegido la opción específica de la biblioteca. Si ambos enfoques se utilizan al mismo tiempo, el enfoque estándar se desactiva automáticamente para esta ruta única y ya no funcionará como se esperaba.
+No puedes usar ambos enfoques al mismo tiempo. Nest detecta cuando el controlador está utilizando `@Res()` o `@Next()`, lo que indica que ha elegido la opción específica de la biblioteca. Si ambos enfoques se utilizan al mismo tiempo, el enfoque estándar se desactiva automáticamente para esta ruta única y ya no funcionará como se esperaba.
 
-## Request object
----
+# Request object
 Los manejadores a menudo necesitan acceso a los detalles de solicitud del cliente. Nest proporciona acceso al objeto de solicitud de la plataforma subyacente (Express de forma predeterminada). Podemos acceder al objeto de solicitud indicando a Nest que lo inyecte agregando el decorador @Req () a la firma del controlador.
 
 ```JS
@@ -75,8 +70,8 @@ El objeto de solicitud representa la solicitud HTTP y tiene propiedades para la 
   - req.headers / req.headers[name]
 
 
-## Resources
----
+# Resources
+
 Antes, definimos un punto final para buscar el recurso de gatos (ruta). Normalmente también queremos proporcionar un punto final que crea nuevos registros. Para esto, vamos a crear el controlador de POST:
 
 ```JS
@@ -100,8 +95,7 @@ export class CatsController {
 
 Es así de simple. Nest proporciona el resto de los decoradores de punto final de solicitud HTTP estándar de la misma manera: `@Put()`, `@Delete()`, `@Patch()`, `@Options()`, `@Head()` y `@All()`. Cada uno representa su método de solicitud HTTP respectivo.
 
-##Status code
----
+# Status code
 Como se mencionó, el código de la respuesta a la respuesta es siempre 200 por defecto, excepto por el POST solicitudes que son 201. podemos cambiar fácilmente este comportamiento añadiendo el decorador de `@HttpCode(...)` a nivel de un `controlador`.
 
 ```JS
@@ -126,8 +120,7 @@ create() {
 }
 ```
 
-##Parámetros de ruta
----
+# Parámetros de ruta
 Las rutas con rutas estáticas no funcionarán cuando necesite aceptar datos dinámicos como parte de la solicitud (por ejemplo, GET / cats / 1) para obtener cat con id 1). Para definir rutas con parámetros, podemos agregar tokens de parámetros de ruta en la ruta de la ruta para capturar el valor dinámico en esa posición en la URL de la solicitud. El token de parámetro de ruta en el ejemplo del decorador `@Get()` a continuación demuestra este uso. Se puede acceder a los parámetros de ruta declarados de esta manera utilizando el decorador `@Param()`, que debe agregarse a la firma del método.
 
 ```JS
@@ -138,7 +131,7 @@ findOne(@Param() params): string {
 }
 ```
 
-`@Param()` se utiliza para decorar un parámetro de método (parámetros en el ejemplo anterior), y hace que los parámetros de ruta estén disponibles como propiedades de ese parámetro de método decorado dentro del cuerpo del método. Como se ve en el código anterior, podemos acceder al parámetro id haciendo referencia a params.id. También puede pasar un token de parámetro particular al decorador y luego hacer referencia al parámetro de ruta directamente por nombre en el cuerpo del método.
+`@Param()` se utiliza para decorar un parámetro de método (parámetros en el ejemplo anterior), y hace que los parámetros de ruta estén disponibles como propiedades de ese parámetro de método decorado dentro del cuerpo del método. Como se ve en el código anterior, podemos acceder al parámetro id haciendo referencia a `params.id` También puede pasar un token de parámetro particular al decorador y luego hacer referencia al parámetro de ruta directamente por nombre en el cuerpo del método.
 
 ```JS
 @Get(':id')
@@ -147,8 +140,7 @@ findOne(@Param('id') id): string {
 }
 ```
 
-##Rutas orden
----
+# Rutas orden
 Tenga en cuenta que el orden de registro de la ruta (el orden en que aparece el método de cada ruta en una clase) es importante. Supongamos que tiene una ruta que devuelve gatos por identificador `(cats/:id)`. Si registra otro punto final debajo de él en la definición de clase que devuelve todos los gatos a la vez (gatos), una solicitud GET /cats nunca llegará al segundo controlador como se desee, ya que todos los parámetros de ruta son opcionales. Vea el siguiente ejemplo:
 
 ```JS
@@ -170,15 +162,15 @@ export class CatsController {
 
 Para evitar tales efectos secundarios, simplemente mueva la declaración `findAll()` (incluido su decorador) sobre `findOne()`
 
-##Alcances
+# Alcances
 
 Para las personas que provienen de diferentes orígenes del lenguaje de programación, puede ser inesperado saber que en Nest, casi todo se comparte en las solicitudes entrantes. Tenemos un grupo de conexión a la base de datos, servicios singleton con estado global, etc. Recuerde que Node.js no sigue el modelo sin estado de múltiples hilos con solicitud/respuesta en el que cada solicitud es procesada por un hilo diferente. Por lo tanto, el uso de instancias de singleton es completamente seguro para nuestras aplicaciones.
 
 Sin embargo, hay casos extremos en los que la vida útil del controlador basada en la solicitud puede ser el comportamiento deseado, por ejemplo, el almacenamiento en caché por solicitud en las aplicaciones GraphQL, el seguimiento de solicitudes o la tenencia múltiple. Aprende a controlar los ámbitos aquí.
 
-##Asynchronicity
+# Asynchronicity
 
-Amamos la moderna JavaScript y sabemos que la extracción de datos es casi asíncrono. Por eso Nest apoya y trabaja bien con funciones async.
+Amamos lo mmoderno JavaScript y sabemos que la extracción de datos es casi asíncrono. Por eso Nest apoya y trabaja bien con funciones async.
 
 Cada función async tiene que devolver una promesa. Esto significa que puede devolver un valor aplazado que el Nest podrá resolver por sí solo. Veamos un ejemplo de esto:
 
@@ -200,7 +192,7 @@ findAll(): Observable<any[]> {
 ```
 Ambos enfoques anteriores funcionan y puede usar lo que se ajuste a sus necesidades.
 
-##Solicitar carga útil
+# Solicitar carga útil
 
 Nuestro ejemplo anterior del controlador de ruta POST no aceptó ningún parámetro de cliente. Arreglamos esto agregando el decorador `@Body()` aquí.
 
@@ -224,8 +216,8 @@ async create(@Body() createCatDto: CreateCatDto) {
 }
 ```
 
-##Full resource sample
----
+# Full resource sample
+
 A continuación se muestra un ejemplo que hace uso de varios de los decoradores disponibles para crear un controlador básico. Este controlador expone un par de métodos para acceder y manipular datos internos.
 ```JS
 //cats.controller.ts
@@ -261,12 +253,11 @@ export class CatsController {
 }
 ```
 
-##Getting up and running
----
+#Getting up and running
 
 Con el controlador anterior completamente definido, Nest aún no sabe que CatsController existe y, como resultado, no creará una instancia de esta clase.
 
-Los controladores siempre pertenecen a un módulo, por lo que incluimos la matriz de controladores dentro del decorador @Module (). Como aún no hemos definido ningún otro módulo, excepto el módulo de aplicación raíz, usaremos eso para introducir el controlador Cats:
+Los controladores siempre pertenecen a un módulo, por lo que incluimos la matriz de controladores dentro del decorador `@Module()`. Como aún no hemos definido ningún otro módulo, excepto el módulo de aplicación raíz, usaremos eso para introducir el controlador Cats:
 
 ```Js
 //app.module.ts
@@ -279,11 +270,11 @@ import { CatsController } from './cats/cats.controller';
 export class ApplicationModule {}
 ```
 
-Adjuntamos los metadatos a la clase de módulo utilizando el decorador @Module (), y ahora Nest puede reflejar fácilmente qué controladores deben montarse.
+Adjuntamos los metadatos a la clase de módulo utilizando el decorador `@Module()`, y ahora Nest puede reflejar fácilmente qué controladores deben montarse.
 
-##Apéndice: enfoque de biblioteca específica
+# Apéndice: enfoque de biblioteca específica
 
-Hasta ahora hemos discutido la forma estándar de Nest de manipular respuestas. La segunda forma de manipular la respuesta es usar un objeto de respuesta específico de la biblioteca. Para inyectar un objeto de respuesta particular, necesitamos usar el decorador @Res (). Para mostrar las diferencias, reescribamos CatsController a lo siguiente:
+Hasta ahora hemos discutido la forma estándar de Nest de manipular respuestas. La segunda forma de manipular la respuesta es usar un objeto de respuesta específico de la biblioteca. Para inyectar un objeto de respuesta particular, necesitamos usar el decorador `@Res()`. Para mostrar las diferencias, reescribamos CatsController a lo siguiente:
 
 ```JS
 import { Controller, Get, Post, Res, HttpStatus } from '@nestjs/common';

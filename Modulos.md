@@ -1,4 +1,4 @@
-#Módulos
+# **Módulos**
 
 Un módulo es una clase anotada con un decorador `@Module()`. El decorador `@Module()` proporciona metadatos que Nest utiliza para organizar la estructura de la aplicación.
 
@@ -13,7 +13,7 @@ El decorador `@Module()` toma un solo objeto cuyas propiedades describen el mód
 
 El módulo encapsula proveedores por defecto. Esto significa que es imposible inyectar proveedores que no forman parte directamente del módulo actual ni se exportan desde los módulos importados.
 
-## Feature modules#
+# Feature modules
 
 El CatsController y el CatsService pertenecen al mismo dominio de aplicaciones. Consideraremos llevarlos a un módulo de características, siendo el CatsModule.
 
@@ -47,7 +47,7 @@ Así es como se ve nuestra estructura de directorios ahora:
 
 ## Módulo compartido
 
-En Nest, los módulos son singletons por defecto, y así puede compartir la misma instancia de cualquier proveedor entre 2 .. * módulos sin esfuerzo.
+En Nest, los módulos son singletons por defecto, y así puede compartir la misma instancia de cualquier proveedor entre 2 módulos sin esfuerzo.
 
 Cada módulo es un módulo compartido de hecho. Una vez creado, puede ser reutilizado por cualquier módulo. Imaginemos que queremos compartir la instancia de CatsService entre algunos otros módulos. Para hacer eso, necesitamos poner el servicio Cats en la matriz de exportaciones como se muestra a continuación:
 
@@ -67,7 +67,7 @@ export class CatsModule {}
 
 Ahora, cada módulo que importaría CatsModule tiene acceso a CatsService y compartirá la misma instancia con todos los módulos que importan este módulo también.
 
-## Módulos reexportando
+# Módulos reexportando
 
 Los módulos pueden exportar sus proveedores internos. Además, pueden reexportar módulos importados por ellos mismos.
 
@@ -81,7 +81,7 @@ export class CoreModule {}
 Dependency injection#
 ```
 
-## Inyección de dependencia
+# Inyección de dependencia
 
 Una clase de módulo también puede inyectar proveedores (por ejemplo, para fines de configuración):
 

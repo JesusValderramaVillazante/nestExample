@@ -1,4 +1,5 @@
-export interface Cat {
+export interface CatInterface {
+    id: number;
     name: string;
     age: number;
     breed: string;

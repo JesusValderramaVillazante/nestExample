@@ -1,26 +1,31 @@
-import { Controller, Get, Post, Body, HttpException, HttpStatus, UsePipes, Param } from '@nestjs/common';
-import { CreateCatDto } from '../classes/create-cat-dto';
-import { Cat } from '../interfaces/cat';
+import { Controller, Get, Post, Body, Param, UseGuards, SetMetadata } from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { ForbiddenException } from 'src/forbidden.exception';
 import { ParseIntPipe } from 'src/parse-int.pipe';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { RolesGuard } from './roles.guard';
+import { Cat } from 'src/cats/cat.entity';
 
 @Controller('cats')
+@UseGuards(RolesGuard)
 export class CatsController {
-    constructor(private readonly catsService: CatsService) { }
+    constructor(private readonly catsService: CatsService, private readonly authService: AuthService) { }
     
-    @Post()
-    async create(@Body() createCatDto: CreateCatDto) {
-        this.catsService.create(createCatDto);
+    @Get('token')
+    async createToken(): Promise<any> {
+      return await this.authService.createToken();
     }
 
     @Get()
+    @UseGuards(AuthGuard('jwt'))
+    //@SetMetadata('roles', ['admin'])
     async findAll(): Promise<Cat[]> {
-        try {
-            return await this.catsService.findAll();
-        } catch (e) {
-            throw new ForbiddenException();
-        }
+        return await this.catsService.findAll();
+    }
+
+    @Post()
+    async create(@Body() createCatDto: Cat) {
+        this.catsService.create(createCatDto);
     }
 
     @Get(':id')

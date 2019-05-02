@@ -5,21 +5,27 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { RolesGuard } from './roles.guard';
 import { Cat } from 'src/cats/cat.entity';
+import { ConfigService } from 'src/config-module/config-service';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
 export class CatsController {
-    constructor(private readonly catsService: CatsService, private readonly authService: AuthService) { }
+    constructor(
+        private readonly catsService: CatsService, 
+        private readonly authService: AuthService,
+        private config: ConfigService) { }
     
     @Get('token')
     async createToken(): Promise<any> {
-      return await this.authService.createToken();
+        console.log(this.config.get('PORT'));
+        return await this.authService.createToken();
     }
 
     @Get()
     @UseGuards(AuthGuard('jwt'))
     //@SetMetadata('roles', ['admin'])
     async findAll(): Promise<Cat[]> {
+
         return await this.catsService.findAll();
     }
 
